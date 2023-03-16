@@ -1,10 +1,13 @@
 import React, { Suspense } from 'react'
 import { Canvas } from "@react-three/fiber"
 import "./style.css"
-import {CubeCamera, Environment, OrbitControls, PerspectiveCamera} from "@react-three/drei"
+import { CubeCamera, Environment, OrbitControls, PerspectiveCamera } from "@react-three/drei"
 import { Ground } from "./Ground";
-import {Car} from "./Car";
-import {Rings} from "./Rings";
+import { Car } from "./Car";
+import { Rings } from "./Rings";
+import { Boxes } from "./Boxes";
+import {Bloom, ChromaticAberration, EffectComposer} from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
 
 function CarShow() {
   return (
@@ -26,6 +29,8 @@ function CarShow() {
           </CubeCamera>
 
           <Rings />
+          <Boxes />
+
           <spotLight
               color={[1, 0.25, 0.7]}
               intensity={1.5}
@@ -46,6 +51,22 @@ function CarShow() {
           />
 
           <Ground />
+
+          <EffectComposer>
+              <Bloom
+                  blendFunction={BlendFunction.ADD}
+                  intensity={1.3} // The bloom intensity.
+                  width={500} // render width
+                  height={500} // render height
+                  kernelSize={5} // blur kernel size
+                  luminanceThreshold={0.95} // luminance threshold. Raise this value to mask out darker elements in the scene.
+                  luminanceSmoothing={0.025} // smoothness of the luminance threshold. Range is [0, 1]
+              />
+              <ChromaticAberration
+                  blendFunction={BlendFunction.NORMAL} // blend mode
+                  offset={[0.0005, 0.0012]} // color offset
+              />
+          </EffectComposer>
       </>
   );
 }
