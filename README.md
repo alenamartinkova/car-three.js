@@ -2,4 +2,4 @@
 Car in three.js 
 
 ``` bash
-npm run dev
+npm start
